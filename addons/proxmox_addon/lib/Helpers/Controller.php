@@ -7,6 +7,8 @@ abstract class Controller {
 	protected $view;
     protected $route;
     protected $flash;
+    protected $trans;
+    
     private $action;
     private $vars;
 
@@ -18,11 +20,15 @@ abstract class Controller {
         $this->view = new View(
             $templateDir,
             $this->route,
-            $this->flash
+            $this->flash,
+            $vars
         );
         
         $this->action = $action;
         $this->vars = $vars;
+
+        $this->trans['_lang'];
+
     }
 
     public function json($data)

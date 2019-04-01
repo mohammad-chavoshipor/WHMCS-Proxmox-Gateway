@@ -11,14 +11,14 @@ class InterfaceController extends Controller
 	
 	public function indexGetAction()
 	{
-		return $this->view->render('interface/list', [
+		return $this->view->render('interface/list.tpl', [
 			'interfaces' => NetInterface::All()
 		]);
 	}
 
 	public function addGetAction()
 	{
-		return $this->view->render('interface/add', [
+		return $this->view->render('interface/add.tpl', [
 			'clusters' => Cluster::all()
 		]);
 	}
@@ -49,7 +49,7 @@ class InterfaceController extends Controller
 			$this->route->redirect('interface');
 		}
 
-		return $this->view->render('interface/edit', [
+		return $this->view->render('interface/edit.tpl', [
 			'interface' => $interface
 		]);
 	}

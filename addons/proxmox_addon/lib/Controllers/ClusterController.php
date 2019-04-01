@@ -10,14 +10,14 @@ class ClusterController extends Controller
 	
 	public function indexGetAction()
 	{
-		return $this->view->render('cluster/list', [
+		return $this->view->render('cluster/list.tpl', [
 			'clusters' => Cluster::All()
 		]);
 	}
 
 	public function addGetAction()
 	{
-		return $this->view->render('cluster/add');
+		return $this->view->render('cluster/add.tpl');
 	}
 
 	public function addPostAction()
@@ -28,7 +28,7 @@ class ClusterController extends Controller
 
 		$cluster->save();
 
-		$this->flash->set('success', 'Cluster ajouté');
+		$this->flash->set('success', $this->trans['flash']['cluster']['success']);
 		$this->route->redirect('cluster');
 
 	}
@@ -38,11 +38,11 @@ class ClusterController extends Controller
 		$cluster = Cluster::find($_GET['id']);
 
 		if (!$cluster) {
-			$this->flash->set('error', 'Impossible de trouver le cluster demandé');
+			$this->flash->set('error', $this->trans['flash']['cluster']['not_found']);
 			$this->route->redirect('cluster');
 		}
 
-		return $this->view->render('cluster/edit', [
+		return $this->view->render('cluster/edit.tpl', [
 			'cluster' => $cluster
 		]);
 	}
@@ -52,14 +52,14 @@ class ClusterController extends Controller
 		$cluster = Cluster::find($_GET['id']);
 
 		if (!$cluster) {
-			$this->flash->set('error', 'Impossible de trouver le cluster demandé');
+			$this->flash->set('error', $this->trans['flash']['cluster']['not_found']);
 			$this->route->redirect('cluster');
 		}
 
 		$cluster->name = $_POST['name'];
 		$cluster->save();
 
-		$this->flash->set('success', 'Cluster mis à jours');
+		$this->flash->set('success', $this->trans['flash']['cluster']['updated']);
 		$this->route->redirect('cluster');
 	}
 
@@ -68,18 +68,18 @@ class ClusterController extends Controller
 		$cluster = Cluster::find($_GET['id']);
 
 		if (!$cluster) {
-			$this->flash->set('error', 'Impossible de trouver le cluster demandé');
+			$this->flash->set('error', $this->trans['flash']['cluster']['not_found']);
 			$this->route->redirect('cluster');
 		}
 
 		if ($cluster->nodes->count()) {
-			$this->flash->set('error', 'Imossible de suppimer le cluster tant que des serveurs lui sont encore associés.');
+			$this->flash->set('error', $this->trans['flash']['cluster']['error']);
 			$this->route->redirect('cluster');
 		}
 
 		$cluster->delete();
 
-		$this->flash->set('success', 'Cluster supprimé');
+		$this->flash->set('success', $this->trans['flash']['cluster']['deleted']);
 		$this->route->redirect('index');
 	}
 }

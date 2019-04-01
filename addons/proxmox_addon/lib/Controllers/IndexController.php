@@ -9,8 +9,6 @@ class IndexController extends Controller
 {
 	public function indexGetAction()
 	{
-		return $this->view->render('index', [
-			//'clusters' => Cluster::All()
-		]);
+		return $this->view->render('index.tpl');
 	}
 }

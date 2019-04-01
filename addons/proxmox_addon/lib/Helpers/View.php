@@ -1,33 +1,32 @@
 <?php
 
 namespace WHMCS\Module\Addon\ProxmoxAddon\Helpers;
+use Smarty;
 
 class View {
 
-	private $dir;
-	private $route;
-    private $flash;
+    private $smarty;
 
-    public function __construct($dir, Route $route, Flash $flash)
+    public function __construct($dir, Route $route = null, Flash $flash = null, $vars = null)
 	{
-		$this->dir = rtrim($dir, '/');
+		$templates = rtrim($dir, '/');
+		$var = dirname(dirname(__DIR__)) . '/templates';
 
-		$this->route = $route;
-        $this->dir = $dir;
-        $this->flash = $flash;
+		$this->vars = $vars;
+
+		$this->smarty = new Smarty();
+		$this->smarty->setTemplateDir($dir);
+		$this->smarty->setCompileDir("$var/templates_c");
+
+		$this->smarty->assign('route', $route);
+		$this->smarty->assign('flash', $flash);
+		$this->smarty->assign('action', $_GET['action'] ?? null);
+		$this->smarty->assign('trans', $vars['_lang']);
     }
 
 	public function render($name, $args = [])
 	{
-		if (!is_file($this->dir . '/' . $name . '.php')) {
-			throw new  \Exception('View : ' . $this->dir . '/' .$name .'.php not found');
-		}
-
-		ob_start();
-			extract($args);
-			include $this->dir.'/'.$name.'.php';
-		$content = ob_get_clean();
-
-		return $content;
+		$this->smarty->assign($args);
+		return $this->smarty->fetch($name);
 	}
 }

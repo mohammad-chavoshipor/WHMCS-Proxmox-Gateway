@@ -27,7 +27,7 @@ class ServerController extends Controller
 	{
 		$cluster = $this->check();
 
-		return $this->view->render('server/list', [
+		return $this->view->render('server/list.tpl', [
 			'cluster' => $cluster
 		]);
 	}
@@ -36,7 +36,7 @@ class ServerController extends Controller
 	{
 		$cluster = $this->check();
 
-		return $this->view->render('server/add', [
+		return $this->view->render('server/add.tpl', [
 			'servers' => Server::All(),
 			'cluster' => $cluster
 		]);
@@ -75,7 +75,7 @@ class ServerController extends Controller
 			$this->route->redirect('server', ['cluster' => $cluster->id]);
 		}
 
-		return $this->view->render('server/edit', [
+		return $this->view->render('server/edit.tpl', [
 			'node' => $node
 		]);
 	}

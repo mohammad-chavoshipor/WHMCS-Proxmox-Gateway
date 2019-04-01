@@ -47,6 +47,15 @@ function proxmox_addon_config()
         'description' => '',
         'author' => 'Uneo7',
         'version' => '1.0',
+        'fields' => array(
+            'username_prefix' => array (
+                'FriendlyName' => 'Username prefix',
+                'Type' => 'text',
+                'Size' => '100',
+                'Default' => 'Gateway' 
+            ),
+    
+        )
     ];
 }
 

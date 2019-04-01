@@ -10,14 +10,14 @@ class TemplateController extends Controller
 		
 	public function indexGetAction()
 	{
-		return $this->view->render('template/list', [
+		return $this->view->render('template/list.tpl', [
 			'templates' => Template::All()
 		]);
 	}
 
 	public function addGetAction()
 	{
-		return $this->view->render('template/add', [
+		return $this->view->render('template/add.tpl', [
 			'clusters' => Cluster::all()
 		]);
 	}
@@ -43,7 +43,7 @@ class TemplateController extends Controller
 			$this->route->redirect('template');
 		}
 
-		return $this->view->render('template/edit', [
+		return $this->view->render('template/edit.tpl', [
 			'template' => $template,
 			'clusters' => Cluster::all()
 		]);

@@ -3,7 +3,7 @@
 use WHMCS\Module\Addon\ProxmoxAddon\Models\NetInterface;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Template;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Cluster;
-use WHMCS\Module\Server\ProxmoxAddon\Helpers\View;
+use WHMCS\Module\Addon\ProxmoxAddon\Helpers\View;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Task;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Vm;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Node;
@@ -13,20 +13,21 @@ use WHMCS\Module\Addon\ProxmoxAddon\Tasks\VncTask;
 use WHMCS\Product\Product;
 use WHMCS\Product\Server;
 
+
 function proxmox_addon_ConfigOptions()
 {
 
     if (isset($_REQUEST['action']) && ($_REQUEST['action'] != 'save') && preg_match('/configproducts.php/', $_SERVER['SCRIPT_FILENAME'])) {
 
-        $view = new View(dirname(__DIR__) . '/templates');
         $product = Product::find($_REQUEST['id']);
         $clusters = Cluster::all();
 
         $interfaces = NetInterface::where('cluster_id', $product->configoption2)->get();
+        $view = new View(dirname(__DIR__) . '/templates');
 
         echo json_encode([
             'mode' => 'advanced',
-            'content' => $view->render('admin/product', [
+            'content' => $view->render('admin/product.tpl', [
                 'product' => $product,
                 'clusters' => $clusters,
                 'interfaces' => $interfaces,
@@ -79,13 +80,15 @@ function proxmox_addon_AdminServicesTabFields(array $params)
 function generateAvancedCommands(Vm $vm = null)
 {
 
-    if (!$vm) return '<button class="btn btn-default" disabled>Reinstall</button>';
+    if (!$vm) return '<button class="btn btn-default" disabled>Reinstall</button> <button type="button" class="btn btn-default" disabled>Console</button>';
+    
     $task = Task::where([
         ['service_id', '=', $vm->service_id],
         ['task', '=', 'resinstallLxc'],
         ['status', '<', 3]
     ])->first();
-    if ($task) return '<button class="btn btn-default" disabled>Reinstall in progress ...</button>';
+
+    if ($task) return '<button class="btn btn-default" disabled>Reinstall in progress ...</button> <button type="button" class="btn btn-default" disabled>Console</button>';
 
     $templates = Template::where('cluster_id', $vm->node->cluster_id)->get();
     $vnc = new VncTask($vm->node->server);
@@ -94,67 +97,13 @@ function generateAvancedCommands(Vm $vm = null)
         'node' => $vm->node->node
     ]);
 
+    $view = new View(dirname(__DIR__) . '/templates');
+    $view = $view->render('admin/avanced.tpl', [
+        'templates' => $templates,
+        'url' => $url
+    ]);
 
-    $output = '
-    <script>
-        function openConsole() {
-            window.open("'.$url.'", "Console", "width=800,height=600");
-            window.close();
-        }
-        function runReinstall() {
-            $("#module_reinstall .btn-primary").attr("disabled", true);
-            
-
-            $.post("clientsservices.php", {
-                    modop: "custom",
-                    token: csrfToken,
-                    id: $("input[name=id]").val(),
-                    userid: $("input[name=userid]").val(),
-                    ajax: 1,
-                    ac: "reinstall",
-                    os: $("#os-list").val()
-                })
-                .done(function( data ) {
-                    location.reload();
-                });
-        }
-    </script>
-    <div class="modal fade" id="module_reinstall" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content panel panel-primary">
-                <div class="modal-header panel-heading">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">×</span>
-                        <span class="sr-only">Close</span>
-                    </button>
-                    <h4 class="modal-title">Confirm reinstall</h4>
-                </div>
-                <div class="modal-body panel-body">
-                <p><strong>Please select an os :</strong></p>
-                <select id="os-list" class="form-control">';
-                    foreach ($templates as $template) {
-                       $output .= '<option value="'.$template->id.'">'.$template->name .'</option><br>';
-                    }
-    $output .= '</select>
-                </div>
-                <div class="modal-footer panel-footer">
-                    <button type="button" class="btn btn-primary" onclick="runReinstall()">
-                        Reinstall
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <button type="button" class="btn btn-default" onclick="jQuery(\'#module_reinstall\').modal(\'show\');">Reinstall</button>
-    <button type="button" class="btn btn-default" onclick="openConsole()">Console</button>
-    ';
-
-
-    return $output;
+    return $view;
 }
 
 function generateTaskTable($service) 

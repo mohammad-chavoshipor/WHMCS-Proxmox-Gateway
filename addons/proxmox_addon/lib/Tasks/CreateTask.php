@@ -10,10 +10,12 @@ use WHMCS\Module\Addon\ProxmoxAddon\Models\Vm;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Node;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Template;
 
+use WHMCS\Module\Addon\Setting;
 use WHMCS\Product\Server;
 use WHMCS\Service\Service;
 
 use Proxmox\Nodes;
+use Proxmox\Access;
 
 class CreateTask extends Task
 {
@@ -124,6 +126,14 @@ class CreateTask extends Task
 			'password2' => $service->password
 		]);
 
+		if (strlen($password['password']) < 5) {
+			log_queue($service->id, 'CreateAccount', "VM Creation failed with error : The password needs to contain at least 5 characters");
+			return [
+				null, 
+				"VM Creation failed with error : $error"
+			];
+		}
+
 		$create = [
             'vmid'        => $params['id'] ?? $nextId->data,
 
@@ -176,7 +186,6 @@ class CreateTask extends Task
 				];
 			}
 		}
-var_dump($create);
 
 		list($data, $error) = $this->request(
 			'createLxc',
@@ -199,7 +208,28 @@ var_dump($create);
 			$vm->node_id = $server->id;
 			$vm->save();
 		}
-	
+
+		$prefix = Setting::where([
+			'module' => 'proxmox_addon',
+			'setting' => 'username_prefix'
+		])->first();
+
+		$user = Access::getUser("{$prefix->value}_{$service->client->id}@pve");
+var_dump($user);
+		if (!$user->data) {
+			Access::createUser([
+				'userid' => "{$prefix->value}_{$service->client->id}@pve",
+				'email' => $service->client->email,
+				'firstname' => $service->client->firstName,
+				'lastname' => $service->client->lastName
+			]);
+		}
+
+		Access::updateAcl([
+			'users' => "{$prefix->value}_{$service->client->id}@pve",
+			'path' => "/vms/{$create['vmid']}",
+			'roles' => 'PVEVMUser',
+		]);
 
 		return [
 			$data

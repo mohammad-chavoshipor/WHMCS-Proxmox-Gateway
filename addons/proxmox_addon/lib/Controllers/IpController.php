@@ -10,14 +10,14 @@ class IpController extends Controller
 	
 	public function indexGetAction()
 	{
-		return $this->view->render('ips/list', [
+		return $this->view->render('ips/list.tpl', [
 			'ips' => Ip::All()
 		]);
 	}
 
 	public function addGetAction()
 	{
-		return $this->view->render('ips/add', [
+		return $this->view->render('ips/add.tpl', [
 			'clusters' => Cluster::all()
 		]);
 	}
@@ -48,7 +48,7 @@ class IpController extends Controller
 			$this->route->redirect('ip');
 		}
 
-		return $this->view->render('ips/edit', [
+		return $this->view->render('ips/edit.tpl', [
 			'ip' => $ip
 		]);
 	}
