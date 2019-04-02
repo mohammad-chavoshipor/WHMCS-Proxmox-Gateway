@@ -16,6 +16,17 @@ function loadData() {
 		$('#loader').addClass('hidden');
 
 		if (data.success) {
+
+			if (data.install) {
+				$('#install').removeClass('hidden');
+				return;
+			}
+
+			if (data.reinstall) {
+				$('#reinstall').removeClass('hidden');
+				return;
+			}
+
 			$('#infos').removeClass('hidden');
 			$('.action').prop('title', '');
 			console_url = data.url;
@@ -43,6 +54,15 @@ function loadData() {
 
 			$("#total_mem").html(total_mem);
 			$("#used_mem").html(used_mem);
+
+			$('#os')
+				.find('option')
+				.remove()
+				.end();
+
+			for (let template of data.templates) {
+				$('#os').append('<option value="'+ template.id +'">'+ template.name +'</option>')
+			}
 
 			if (data.status.status === 'running') {
 				$('#status').html('<span class="label label-success">On</span>');
@@ -89,10 +109,16 @@ $(document).ready(function () {
 })
 
 $('.action').click(function (event) {
-	const action = $(this).data('action');
+	let action = $(this).data('action');
+	const message = $(this).data('action');
 
 	if (action) {
 		$('.action').prop('disabled', true);
+
+		if (action === 'reinstall') {
+			action = action + '&os=' + $('#os').val();
+			$('#reinstall_modal').modal('hide');
+		}
 
 		$.get(url + '&method=' + action, function (data) {
 			$('.action').prop('disabled', false);
@@ -100,13 +126,13 @@ $('.action').click(function (event) {
 			if (data.success) {
 				Swal.fire(
 					'Success',
-					action.capitalize() + ' executed',
+					message.capitalize() + (message === 'reinstall' ? ' scheduled' : ' executed'),
 					'success'
 				);
 			} else {
 				Swal.fire(
 					'Error',
-					'An error occured while executing the ' + action+ ' task ! Please try again later.',
+					'An error occured while executing the ' + message + ' task ! Please try again later.',
 					'error'
 				);
 			}

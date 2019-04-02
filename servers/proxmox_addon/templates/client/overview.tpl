@@ -112,6 +112,18 @@
 		</div>
 	</div>
 
+	<div id="install" class="hidden text-center" style="margin-top: 30px;">
+		<i class="fas fa-cog fa-spin fa-5x"></i>
+		<h2>Installation in progress ...</h2>
+		<p>Plase come back later</p>
+	</div>
+
+	<div id="reinstall" class="hidden text-center" style="margin-top: 30px;">
+		<i class="fas fa-cog fa-spin fa-5x"></i>
+		<h2>Reinstallation in progress ...</h2>
+		<p>Plase come back later</p>
+	</div>
+
 	<div id="loader" class="text-center" style="margin-top: 30px;">
 		<i class="fas fa-sync fa-spin fa-5x"></i>
 		<h2>Loading ...</h2>
@@ -215,7 +227,7 @@
 
 					<div class="pull-right">
 						<button id="kill" data-action="kill" data-toggle="tooltip" data-confirm="Do you relly want to kill your server ?" class="action btn btn-danger"><i class="fas fa-skull"></i> Kill</button>
-						<button id="reinstall" data-action="reinstall" data-toggle="tooltip" class="action btn btn-danger"><i class="fas fa-eraser"></i> Reinstall</button>
+						<button data-toggle="modal" data-target="#reinstall_modal" class="action btn btn-danger"><i class="fas fa-eraser"></i> Reinstall</button>
 					</div>
 				</div>
 			</div>
@@ -242,9 +254,30 @@
 			</div>
 		</div>
 	</div>
-	
 
 {/if}
+
+<div class="modal fade" id="reinstall_modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ><span>&times;</span></button>
+				<h4 class="modal-title">Reinstall your server</h4>
+			</div>
+			<div class="modal-body">
+				
+				<div class="form-group">
+					<label for="os">Please select an operating system</label>
+					<select id="os" class="form-control"></select>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="action btn btn-primary" data-dismiss="modal" data-action="reinstall">Reinstall</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
 	const url = 'clientarea.php?action=productdetails&id={$params['serviceid']}';

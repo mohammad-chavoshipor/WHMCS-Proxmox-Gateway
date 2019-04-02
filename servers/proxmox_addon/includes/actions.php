@@ -8,6 +8,7 @@ use WHMCS\Module\Addon\ProxmoxAddon\Tasks\StopTask;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Vm;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Node;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Task;
+use WHMCS\Module\Addon\ProxmoxAddon\Models\Template;
 
 use WHMCS\Product\Server;
 
@@ -32,7 +33,22 @@ function proxmox_addon_reinstall(array $params)
 
     $vm = Vm::where('service_id', $params['serviceid'])->first();
     if (!$vm) {
-        return "VM Reinstallation failed with error : VM Not found !";
+        return 'VM Reinstallation failed with error : VM Not found !';
+    }
+
+    $template = Template::find($_REQUEST['os']);
+    if (!$template) {
+        return 'VM Reinstallation failed with error : Template not found !';
+    }
+
+    $reinstall = Task::where([
+        ['service_id', '=', $vm->service_id],
+        ['task', '=', 'resinstallLxc'],
+        ['status', '<', 3]
+    ])->first();
+
+    if (!$template) {
+        return 'VM Reinstallation failed with error : Reinstall already in progress!';
     }
 
     $task = new Task();
