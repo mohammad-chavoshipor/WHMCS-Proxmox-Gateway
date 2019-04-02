@@ -2,14 +2,18 @@
 
 namespace WHMCS\Module\Addon\ProxmoxAddon\Tasks;
 
+use WHMCS\Module\Addon\ProxmoxAddon\Models\PveAccount;
 use WHMCS\Module\Addon\ProxmoxAddon\Helpers\Task;
+use WHMCS\Module\Addon\Setting;
+
 use Proxmox\Access;
 
 class VncTask extends Task
 {
 
-	public function execute(array $params)
+	public function execute(array $params, $unprivileged = false)
 	{
+
 
 		$password = localAPI('DecryptPassword', [
 			'password2' => $this->server->password
@@ -21,6 +25,20 @@ class VncTask extends Task
 		    'realm' => 'pam'
 		]);
 
+		if ($unprivileged) {
+			$prefix = Setting::where([
+				'module' => 'proxmox_addon',
+				'setting' => 'username_prefix'
+			])->first();
+
+			$ticket = Access::createTicket([
+			    'username' => "{$prefix->value}_{$params['client']}",
+			    'password' => $ticket->data->ticket,
+			    'realm' => 'pve'
+			]);
+
+		}
+		
 		list($vnc, $error) = $this->request(
 			'createLxcVncproxy',
 			$params['node'],

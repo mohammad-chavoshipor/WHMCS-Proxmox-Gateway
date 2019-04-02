@@ -14,6 +14,7 @@
 			<tr>
 				<th>{$trans['name']}</th>
 				<th>Serveurs</th>
+				<th>IPs Disponibles</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -22,6 +23,7 @@
 			<tr>
 				<td>{$cluster->name}</td>
 				<td>{$cluster->nodes->count()}</td>
+				<td>{$cluster->unusedIps()}/{$cluster->ips->count()}</td>
 			
 				<td>
 					<div class="btn-group">

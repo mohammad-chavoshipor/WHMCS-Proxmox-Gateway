@@ -25,7 +25,7 @@
 		<a href="{$route->to('cluster')}">Clusters</a>
 	</li>
 	<li {if $action === 'ip'}class="active"{/if}>
-		<a href="{$route->to('ip')}">Ips</a>
+		<a href="{$route->to('ip')}">IPs</a>
 	</li>
 	<li {if $action === 'interface'}class="active"{/if}>
 		<a href="{$route->to('interface')}">Interfaces</a>

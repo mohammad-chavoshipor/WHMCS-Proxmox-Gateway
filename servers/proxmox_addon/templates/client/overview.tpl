@@ -1,283 +1,253 @@
-<h2>Overview</h2>
+<style>
+	.swal2-popup {
+		font-size: 1.6rem !important;
+	}
+</style>
 
-<p>Overview output goes here...</p>
+<div class="row">   
+	<div class="col-md-6"> 
+			<h3>        
+				VPS Management
+			</h3>
+	</div>
 
-<p>Please Remember: When overriding the default product overview output, it is important to provide the product details and information that are normally displayed on this page. These are provided below.</p>
+	<div class="col-md-6 text-right" style="margin-top: 25px;"> 
+		<div class="btn-group"> 
+			{if $packagesupgrade && !$pendingcancellation}
+				<a href="upgrade.php?type=package&amp;id={$id}" class="btn btn-success">
+					<i class="fas fa-wrench"></i> {$LANG.upgrade}
+				</a>
+			{/if}
 
-<h3>{$LANG.clientareaproductdetails}</h3>
-
-<hr>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.clientareahostingregdate}
-    </div>
-    <div class="col-sm-7">
-        {$regdate}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.orderproduct}
-    </div>
-    <div class="col-sm-7">
-        {$groupname} - {$product}
-    </div>
-</div>
-
-{if $type eq "server"}
-    {if $domain}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.serverhostname}
-            </div>
-            <div class="col-sm-7">
-                {$domain}
-            </div>
-        </div>
-    {/if}
-    {if $dedicatedip}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.primaryIP}
-            </div>
-            <div class="col-sm-7">
-                {$dedicatedip}
-            </div>
-        </div>
-    {/if}
-    {if $assignedips}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.assignedIPs}
-            </div>
-            <div class="col-sm-7">
-                {$assignedips|nl2br}
-            </div>
-        </div>
-    {/if}
-    {if $ns1 || $ns2}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.domainnameservers}
-            </div>
-            <div class="col-sm-7">
-                {$ns1}<br />{$ns2}
-            </div>
-        </div>
-    {/if}
-{else}
-    {if $domain}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.orderdomain}
-            </div>
-            <div class="col-sm-7">
-                {$domain}
-                <a href="http://{$domain}" target="_blank" class="btn btn-default btn-xs">{$LANG.visitwebsite}</a>
-            </div>
-        </div>
-    {/if}
-    {if $username}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.serverusername}
-            </div>
-            <div class="col-sm-7">
-                {$username}
-            </div>
-        </div>
-    {/if}
-    {if $serverdata}
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.servername}
-            </div>
-            <div class="col-sm-7">
-                {$serverdata.hostname}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">
-                {$LANG.domainregisternsip}
-            </div>
-            <div class="col-sm-7">
-                {$serverdata.ipaddress}
-            </div>
-        </div>
-        {if $serverdata.nameserver1 || $serverdata.nameserver2 || $serverdata.nameserver3 || $serverdata.nameserver4 || $serverdata.nameserver5}
-            <div class="row">
-                <div class="col-sm-5">
-                    {$LANG.domainnameservers}
-                </div>
-                <div class="col-sm-7">
-                    {if $serverdata.nameserver1}{$serverdata.nameserver1} ({$serverdata.nameserver1ip})<br />{/if}
-                    {if $serverdata.nameserver2}{$serverdata.nameserver2} ({$serverdata.nameserver2ip})<br />{/if}
-                    {if $serverdata.nameserver3}{$serverdata.nameserver3} ({$serverdata.nameserver3ip})<br />{/if}
-                    {if $serverdata.nameserver4}{$serverdata.nameserver4} ({$serverdata.nameserver4ip})<br />{/if}
-                    {if $serverdata.nameserver5}{$serverdata.nameserver5} ({$serverdata.nameserver5ip})<br />{/if}
-                </div>
-            </div>
-        {/if}
-    {/if}
-{/if}
-
-{if $dedicatedip}
-    <div class="row">
-        <div class="col-sm-5">
-            {$LANG.domainregisternsip}
-        </div>
-        <div class="col-sm-7">
-            {$dedicatedip}
-        </div>
-    </div>
-{/if}
-
-{foreach from=$configurableoptions item=configoption}
-    <div class="row">
-        <div class="col-sm-5">
-            {$configoption.optionname}
-        </div>
-        <div class="col-sm-7">
-            {if $configoption.optiontype eq 3}
-                {if $configoption.selectedqty}
-                    {$LANG.yes}
-                {else}
-                    {$LANG.no}
-                {/if}
-            {elseif $configoption.optiontype eq 4}
-                {$configoption.selectedqty} x {$configoption.selectedoption}
-            {else}
-                {$configoption.selectedoption}
-            {/if}
-        </div>
-    </div>
-{/foreach}
-
-{foreach from=$productcustomfields item=customfield}
-    <div class="row">
-        <div class="col-sm-5">
-            {$customfield.name}
-        </div>
-        <div class="col-sm-7">
-            {$customfield.value}
-        </div>
-    </div>
-{/foreach}
-
-{if $lastupdate}
-    <div class="row">
-        <div class="col-sm-5">
-            {$LANG.clientareadiskusage}
-        </div>
-        <div class="col-sm-7">
-            {$diskusage}MB / {$disklimit}MB ({$diskpercent})
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-5">
-            {$LANG.clientareabwusage}
-        </div>
-        <div class="col-sm-7">
-            {$bwusage}MB / {$bwlimit}MB ({$bwpercent})
-        </div>
-    </div>
-{/if}
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.orderpaymentmethod}
-    </div>
-    <div class="col-sm-7">
-        {$paymentmethod}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.firstpaymentamount}
-    </div>
-    <div class="col-sm-7">
-        {$firstpaymentamount}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.recurringamount}
-    </div>
-    <div class="col-sm-7">
-        {$recurringamount}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.clientareahostingnextduedate}
-    </div>
-    <div class="col-sm-7">
-        {$nextduedate}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.orderbillingcycle}
-    </div>
-    <div class="col-sm-7">
-        {$billingcycle}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5">
-        {$LANG.clientareastatus}
-    </div>
-    <div class="col-sm-7">
-        {$status}
-    </div>
+			<a href="clientarea.php?action=cancel&amp;id={$id}" class="btn btn-danger {if $pendingcancellation}disabled{/if}">
+				{if $pendingcancellation}
+					<i class="fas fa-times"></i> {$LANG.cancellationrequested}
+				{else}
+					<i class="fas fa-times"></i> {$LANG.cancel}
+				{/if}
+			</a>
+		</div>
+	</div>
 </div>
 
 {if $suspendreason}
-    <div class="row">
-        <div class="col-sm-5">
-            {$LANG.suspendreason}
-        </div>
-        <div class="col-sm-7">
-            {$suspendreason}
-        </div>
-    </div>
+	<div class="alert alert-danger">
+		<h4>{$LANG.clientareasuspended}</h4>
+		<strong>{$LANG.suspendreason} </strong>{$suspendreason}
+	</div>
 {/if}
 
-<hr>
+{if !$suspendreason}
+	
+	<div class="row">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-12">
+					<h3>        
+						<span class="fa-stack">
+							<i class="fas fa-circle fa-stack-2x"></i>
+							<i class="fas fa-receipt fa-stack-1x fa-inverse"></i>
+						</span>
+						Billing Details
+					</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">	
+					<table class="table table-striped">
+						<tr>
+							<td><strong>{$LANG.clientareahostingregdate}</strong></td>
+							<td>{$regdate}</td>
+						</tr>
+						<tr>
+							<td><strong>{$LANG.recurringamount}</strong></td>
+							<td>{$recurringamount}</td>
+						</tr>
+						<tr>
+							<td><strong>{$LANG.clientareahostingnextduedate}</strong></td>
+							<td>{$nextduedate}</td>
+						</tr>
+						<tr>
+							<td><strong>{$LANG.orderbillingcycle}</strong></td>
+							<td>{$billingcycle}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-12">
+					<h3>
+						<span class="fa-stack">
+							<i class="fas fa-circle fa-stack-2x"></i>
+							<i class="fas fa-hdd fa-stack-1x fa-inverse"></i>
+						</span>
+						Server details
+					</h3>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-md-12">	
+					<table class="table table-striped">
+						<tr>
+							<td><strong>{$LANG.serverhostname}</strong></td>
+							<td>{$domain}</td>
+						</tr>
+						<tr>
+							<td><strong>{$LANG.primaryIP}</strong></td>
+							<td>{$dedicatedip}</td>
+						</tr>
+						<tr>
+							<td><strong>{$LANG.assignedIPs}</strong></td>
+							<td>{$assignedips|nl2br}</td>
+						</tr>
+						<tr>
+							<td><strong>SSH Key</strong></td>
+							<td>-</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div class="row">
-    <div class="col-sm-4">
-        <form method="post" action="clientarea.php?action=productdetails">
-            <input type="hidden" name="id" value="{$serviceid}" />
-            <input type="hidden" name="customAction" value="manage" />
-            <button type="submit" class="btn btn-default btn-block">
-                Custom Client Area Page
-            </button>
-        </form>
-    </div>
+	<div id="loader" class="text-center" style="margin-top: 30px;">
+		<i class="fas fa-sync fa-spin fa-5x"></i>
+		<h2>Loading ...</h2>
+	</div>
 
-    {if $packagesupgrade}
-        <div class="col-sm-4">
-            <a href="upgrade.php?type=package&amp;id={$id}" class="btn btn-success btn-block">
-                {$LANG.upgrade}
-            </a>
-        </div>
-    {/if}
+	<div id="error" class="text-center hidden" style="margin-top: 30px;">
+		<i class="fas fa-exclamation fa-5x text-danger"></i>
+		<h3>Houston, we have a problem</h3>
+		<p class="lead">En error as occured while trying to reach your server</h2>
+	</div>
 
-    <div class="col-sm-4">
-        <a href="clientarea.php?action=cancel&amp;id={$id}" class="btn btn-danger btn-block{if $pendingcancellation}disabled{/if}">
-            {if $pendingcancellation}
-                {$LANG.cancellationrequested}
-            {else}
-                {$LANG.cancel}
-            {/if}
-        </a>
-    </div>
-</div>
+	<div class="hidden" id="infos">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>        
+					<span class="fa-stack">
+						<i class="fas fa-circle fa-stack-2x"></i>
+						<i class="fas fa-chart-pie fa-stack-1x fa-inverse"></i>
+					</span>
+					Usage
+				</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-striped">
+					<tr>
+						<td><strong>Status</strong></td>
+						<td id="status"></td>
+					</tr>
+					<tr>
+						<td><strong>RAM</strong></td>
+						<td><span id="used_mem"></span> / <span id="total_mem"></span> <span id="mem_prefix">GiB</span></td>
+					</tr>
+					<tr>
+						<td><strong>Disk</strong></td>
+						<td><span id="used_disk"></span> / <span id="total_disk"></span> <span id="disk_prefix">GiB</span></td>
+					</tr>
+					<tr>
+						<td><strong>Bakups</strong></td>
+						<td>1 / 10</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="text-center active">
+							<button class="btn btn-default btn-sm"><i class="fas fa-chart-area"></i> More stats</button>
+
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12">
+				<h3>        
+					<span class="fa-stack">
+						<i class="fas fa-circle fa-stack-2x"></i>
+						<i class="fas fa-bolt fa-stack-1x fa-inverse"></i>
+					</span>
+					Controls
+				</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="well well-sm">
+					<button onclick="openConsole()" class="action btn btn-primary"><i class="fas fa-terminal"></i> Console</button>
+
+					<button 
+						id="start"
+						data-action="start"
+						data-toggle="tooltip"
+						data-placement="bottom"
+						class="action btn btn-default">
+							<i class="fas fa-play"></i> Boot up
+					</button>
+					
+
+					<button 
+						id="shutdown" 
+						data-action="shutdown"
+						data-toggle="tooltip"
+						data-placement="bottom"
+						data-confirm="Do you relly want to stop your server ?"
+						class="action btn btn-default">
+							<i class="fas fa-power-off"></i> Shutdown
+					</button>
+
+					<button 
+						id="restart"
+						data-action="restart"
+						data-toggle="tooltip"
+						data-placement="bottom"
+						data-confirm="Do you relly want to restart your server ?" 
+						class="action btn btn-default">
+							<i class="fas fa-redo"></i> Restart
+					</button>
+
+
+					<div class="pull-right">
+						<button id="kill" data-action="kill" data-toggle="tooltip" data-confirm="Do you relly want to kill your server ?" class="action btn btn-danger"><i class="fas fa-skull"></i> Kill</button>
+						<button id="reinstall" data-action="reinstall" data-toggle="tooltip" class="action btn btn-danger"><i class="fas fa-eraser"></i> Reinstall</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<h3>        
+					<span class="fa-stack">
+						<i class="fas fa-circle fa-stack-2x"></i>
+						<i class="fas fa-cog fa-stack-1x fa-inverse"></i>
+					</span>
+					Settings
+				</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="well well-sm">
+					<button class="btn btn-default"><i class="fas fa-shield"></i> Firewall</button>
+					<button class="btn btn-default"><i class="fas fa-box"></i> Backups</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+{/if}
+
+<script>
+	const url = 'clientarea.php?action=productdetails&id={$params['serviceid']}';
+</script>
+<script src="/modules/servers/proxmox_addon/templates/client/js/sweetalert2.all.min.js"></script>
+<script src="/modules/servers/proxmox_addon/templates/client/js/clientarea.js"></script>

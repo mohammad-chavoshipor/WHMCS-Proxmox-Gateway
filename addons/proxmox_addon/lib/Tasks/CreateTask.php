@@ -9,6 +9,7 @@ use WHMCS\Module\Addon\ProxmoxAddon\Models\Ip;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Vm;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Node;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Template;
+use WHMCS\Module\Addon\ProxmoxAddon\Models\PveAccount;
 
 use WHMCS\Module\Addon\Setting;
 use WHMCS\Product\Server;
@@ -215,7 +216,7 @@ class CreateTask extends Task
 		])->first();
 
 		$user = Access::getUser("{$prefix->value}_{$service->client->id}@pve");
-var_dump($user);
+
 		if (!$user->data) {
 			Access::createUser([
 				'userid' => "{$prefix->value}_{$service->client->id}@pve",

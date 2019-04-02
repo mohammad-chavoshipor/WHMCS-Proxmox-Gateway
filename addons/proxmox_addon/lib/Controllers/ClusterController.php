@@ -3,6 +3,7 @@ namespace WHMCS\Module\Addon\ProxmoxAddon\Controllers;
 
 use WHMCS\Module\Addon\ProxmoxAddon\Helpers\Controller;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Cluster;
+use WHMCS\Module\Addon\ProxmoxAddon\Models\Ip;
 use WHMCS\Product\Product;
 
 class ClusterController extends Controller 

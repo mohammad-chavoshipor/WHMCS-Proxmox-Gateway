@@ -99,7 +99,6 @@ function proxmox_addon_activate()
                 }
             );
 
-
         Capsule::schema()
             ->create(
                 'mod_promox_addon_templates',
