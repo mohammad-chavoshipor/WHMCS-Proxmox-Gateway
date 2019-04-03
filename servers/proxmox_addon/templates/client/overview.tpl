@@ -3,7 +3,7 @@
 		font-size: 1.6rem !important;
 	}
 </style>
-
+{debug}
 <div class="row">   
 	<div class="col-md-6"> 
 			<h3>        
@@ -114,14 +114,14 @@
 
 	<div id="install" class="hidden text-center" style="margin-top: 30px;">
 		<i class="fas fa-cog fa-spin fa-5x"></i>
-		<h2>Installation in progress ...</h2>
-		<p>Plase come back later</p>
+		<h2>Get a <i class="fas fa-coffee"></i> and relax, we're dealing with the boring stuff.</h2>
+		<p><i class="fas fa-coffee"></i> Get a cofee and relax</p>
 	</div>
 
 	<div id="reinstall" class="hidden text-center" style="margin-top: 30px;">
 		<i class="fas fa-cog fa-spin fa-5x"></i>
 		<h2>Reinstallation in progress ...</h2>
-		<p>Plase come back later</p>
+		<p>Get a <i class="fas fa-coffee"></i> and relax, we're dealing with the boring stuff.</p>
 	</div>
 
 	<div id="loader" class="text-center" style="margin-top: 30px;">
@@ -132,7 +132,7 @@
 	<div id="error" class="text-center hidden" style="margin-top: 30px;">
 		<i class="fas fa-exclamation fa-5x text-danger"></i>
 		<h3>Houston, we have a problem</h3>
-		<p class="lead">En error as occured while trying to reach your server</h2>
+		<p class="lead">An error has occured while trying to reach your server</h2>
 	</div>
 
 	<div class="hidden" id="infos">
@@ -226,8 +226,22 @@
 
 
 					<div class="pull-right">
-						<button id="kill" data-action="kill" data-toggle="tooltip" data-confirm="Do you relly want to kill your server ?" class="action btn btn-danger"><i class="fas fa-skull"></i> Kill</button>
-						<button data-toggle="modal" data-target="#reinstall_modal" class="action btn btn-danger"><i class="fas fa-eraser"></i> Reinstall</button>
+						<button 
+							id="kill"
+							data-action="kill"
+							data-toggle="tooltip"
+							data-placement="bottom"
+							data-confirm="Do you relly want to kill your server ?"
+							class="action btn btn-danger">
+								<i class="fas fa-skull"></i> Kill
+						</button>
+						
+						<button 
+							data-toggle="modal"
+							data-target="#reinstall_modal"
+							class="action btn btn-danger">
+								<i class="fas fa-eraser"></i> Reinstall
+						</button>
 					</div>
 				</div>
 			</div>
