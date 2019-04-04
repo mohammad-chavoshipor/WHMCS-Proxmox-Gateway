@@ -4,10 +4,12 @@ use WHMCS\Module\Addon\ProxmoxAddon\Models\Vm;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Template;
 use WHMCS\Module\Addon\ProxmoxAddon\Tasks\VncTask;
 use WHMCS\Module\Addon\ProxmoxAddon\Tasks\RunningTask;
+use WHMCS\Module\Addon\ProxmoxAddon\Tasks\RrdTask;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Account;
 use WHMCS\Module\Addon\ProxmoxAddon\Models\Task;
 
 use WHMCS\Service\Service;
+
 function proxmox_addon_ClientArea(array $params)
 {
 
@@ -73,6 +75,42 @@ function proxmox_addon_ClientArea(array $params)
 				break;
 			case 'data':
 				promox_addon_datas($params);
+				break;
+
+			case 'rrd':
+
+				$server = $service->serverModel;
+				$vm = Vm::where('service_id', $service->id)->first();
+
+				$rrd = new RrdTask($server);
+
+				list($rrd, $error) = $rrd->execute([
+					'id' => $vm->vmid,
+					'node' => $vm->node->node,
+					'timeframe' => $_REQUEST['timeframe'] ?? 'hour'
+				]);
+
+				if ($error) {
+					json([
+						'success' => false,
+						'error' => $error
+					]);
+				}
+
+				json([
+					'success' => true,
+					'rrd' => $rrd
+				]);
+
+				break;
+
+			case 'stats':
+				return array(
+					'tabOverviewReplacementTemplate' => '../templates/client/stats.tpl',
+					'vars' => [
+						'params' => $params
+					],
+				);
 				break;
 		}
 	}

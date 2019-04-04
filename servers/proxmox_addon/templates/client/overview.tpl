@@ -3,10 +3,10 @@
 		font-size: 1.6rem !important;
 	}
 </style>
-{debug}
+
 <div class="row">   
 	<div class="col-md-6"> 
-			<h3>        
+			<h3>
 				VPS Management
 			</h3>
 	</div>
@@ -157,11 +157,11 @@
 					</tr>
 					<tr>
 						<td><strong>RAM</strong></td>
-						<td><span id="used_mem"></span> / <span id="total_mem"></span> <span id="mem_prefix">GiB</span></td>
+						<td><span id="used_mem"></span> / <span id="total_mem"></span></td>
 					</tr>
 					<tr>
 						<td><strong>Disk</strong></td>
-						<td><span id="used_disk"></span> / <span id="total_disk"></span> <span id="disk_prefix">GiB</span></td>
+						<td><span id="used_disk"></span> / <span id="total_disk"></span></td>
 					</tr>
 					<tr>
 						<td><strong>Bakups</strong></td>
@@ -169,7 +169,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" class="text-center active">
-							<button class="btn btn-default btn-sm"><i class="fas fa-chart-area"></i> More stats</button>
+							<a href="clientarea.php?action=productdetails&id={$params['serviceid']}&method=stats" class="btn btn-default btn-sm"><i class="fas fa-chart-area"></i> More stats</a>
 
 						</td>
 					</tr>
@@ -297,4 +297,5 @@
 	const url = 'clientarea.php?action=productdetails&id={$params['serviceid']}';
 </script>
 <script src="/modules/servers/proxmox_addon/templates/client/js/sweetalert2.all.min.js"></script>
+<script src="/modules/servers/proxmox_addon/templates/client/js/numeral.min.js"></script>
 <script src="/modules/servers/proxmox_addon/templates/client/js/clientarea.js"></script>

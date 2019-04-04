@@ -31,29 +31,12 @@ function loadData() {
 			$('.action').prop('title', '');
 			console_url = data.url;
 
-			let total_disk = Math.round(data.status.maxdisk / 2 ** 30);
-			let used_disk = Math.round(data.status.disk / 2 ** 30);
+			
+			$("#total_disk").html(numeral(data.status.maxdisk).format('0 ib'));
+			$("#used_disk").html(numeral(data.status.disk).format('0 ib'));
 
-			if (total_disk < 1) {
-				total_disk = Math.round(data.status.maxdisk / 2 ** 20);
-				used_disk = Math.round(data.status.disk / 2 ** 20);
-				$('#disk_prefix').html('MiB');
-			}
-
-			$("#total_disk").html(total_disk);
-			$("#used_disk").html(used_disk);
-
-			let total_mem = Math.round(data.status.maxmem / 2 ** 30);
-			let used_mem = Math.round(data.status.mem / 2 ** 30);
-
-			if (total_mem < 1) {
-				total_mem = Math.round(data.status.maxmem / 2 ** 20);
-				used_mem = Math.round(data.status.mem / 2 ** 20);
-				$('#mem_prefix').html('MiB');
-			}
-
-			$("#total_mem").html(total_mem);
-			$("#used_mem").html(used_mem);
+			$("#total_mem").html(numeral(data.status.maxmem).format('0 ib'));
+			$("#used_mem").html(numeral(data.status.mem).format('0 ib'));
 
 			$('#os')
 				.find('option')
