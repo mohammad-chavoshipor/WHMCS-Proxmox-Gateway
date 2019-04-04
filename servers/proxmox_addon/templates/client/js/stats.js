@@ -71,7 +71,7 @@ function cpugraph() {
 		type: 'line',
 		data: {
 			datasets: [
-				{ label: 'Total', data: [], fill: false, borderColor: '#3498db' },
+				{ label: 'Total', data: [], fill: false, borderColor: '#2ecc71' },
 				{ label: 'Used', data: [], fill: false, borderColor: '#e74c3c' },
 			]
 		},
@@ -107,8 +107,8 @@ function netgraph() {
 		type: 'line',
 		data: {
 			datasets: [
-				{ label: 'Ingress', data: [], fill: false, borderColor: '#3498db' },
-				{ label: 'Egress', data: [], fill: false, borderColor: '#e74c3c' }
+				{ label: 'Ingress', data: [], fill: false, borderColor: '#e74c3c' },
+				{ label: 'Egress', data: [], fill: false, borderColor: '#2ecc71' }
 			]
 		},
 		options
@@ -138,7 +138,7 @@ function ramgraph() {
 		type: 'line',
 		data: {
 			datasets: [
-				{ label: 'Total', data: [], fill: false, borderColor: '#3498db' },
+				{ label: 'Total', data: [], fill: false, borderColor: '#2ecc71' },
 				{ label: 'Used', data: [], fill: false, borderColor: '#e74c3c' }
 			]
 		},
@@ -168,7 +168,7 @@ function diskgraph() {
 		type: 'line',
 		data: {
 			datasets: [
-				{ label: 'Total', data: [], fill: false, borderColor: '#3498db' },
+				{ label: 'Total', data: [], fill: false, borderColor: '#2ecc71' },
 				{ label: 'Used', data: [], fill: false, borderColor: '#e74c3c' }
 			]
 		},
@@ -198,7 +198,7 @@ function iopsgraph() {
 		type: 'line',
 		data: {
 			datasets: [
-				{ label: 'Writes', data: [], fill: false, borderColor: '#3498db' },
+				{ label: 'Writes', data: [], fill: false, borderColor: '#2ecc71' },
 				{ label: 'Reads', data: [], fill: false, borderColor: '#e74c3c' }
 			]
 		},

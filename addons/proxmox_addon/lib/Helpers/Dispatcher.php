@@ -20,7 +20,7 @@ class Dispatcher {
     }
 
 
-    public function dispatch()
+    public function dispatch($namespace)
     {
         if (!$this->action) $this->action = 'index';
         if (!$this->method) $this->method = 'index';
@@ -28,7 +28,7 @@ class Dispatcher {
         $method = $this->method . 'GetAction';
         if ($_POST) $method = $this->method . 'PostAction';
 
-        $class = 'WHMCS\Module\Addon\ProxmoxAddon\Controllers\\' . $this->action . 'Controller';
+        $class = "WHMCS\Module\Addon\ProxmoxAddon\Controllers\\$namespace\\{$this->action}Controller";
 
         if (class_exists($class)) {
             $class = new $class(
@@ -38,7 +38,7 @@ class Dispatcher {
                 $this->vars
             );
             
-            return $class->$method();
+            return $class->$method($this->vars);
         }
         
 
