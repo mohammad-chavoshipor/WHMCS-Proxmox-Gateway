@@ -10,14 +10,28 @@
 </div>
 
 <div id="stats" class="hidden">
-	
-	<h3>
-		<span class="fa-stack">
-			<i class="fas fa-circle fa-stack-2x"></i>
-			<i class="fas fa-microchip fa-stack-1x fa-inverse"></i>
-		</span>
-		CPU
-	</h3>
+	<div class="row">
+		<div class="col-md-10">
+			<h3>
+				<span class="fa-stack">
+					<i class="fas fa-circle fa-stack-2x"></i>
+					<i class="fas fa-microchip fa-stack-1x fa-inverse"></i>
+				</span>
+				CPU
+			</h3>
+		</div>
+		<div class="col-md-2 text-right">
+			<label for="timeframe">Time base</label>
+			<select id="timeframe" class="form-control">
+				<option value="hour">Hour</option>
+				<option value="day">Day</option>
+				<option value="week">Week</option>
+				<option value="month">Month</option>
+				<option value="year">Year</option>
+			</select>
+		</div>		
+	</div>
+
 	<canvas id="cpu" height="80"></canvas>
 
 	<h3>

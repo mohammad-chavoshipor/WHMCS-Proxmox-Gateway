@@ -20,12 +20,11 @@ const options = {
 	},
 	tooltips: {
 		callbacks: {
-			title: () => null,
 			label: function(tooltipItem, data) {
 				return numeral(tooltipItem.yLabel).format('0 ib');
 			},
 		}
-    }
+	}
 };
 
 
@@ -39,7 +38,8 @@ function loadData() {
 	$('#error').addClass('hidden');
 	$('#stats').addClass('hidden');
 
-	$.get(url + '&method=rrd', function (data) {
+	const timeframe = $('#timeframe').val() || 'hour';
+	$.get(url + '&method=rrd&timeframe=' + timeframe, function (data) {
 		$('#loader').addClass('hidden');
 
 		if (data.success) {
@@ -64,7 +64,11 @@ function loadData() {
 
 $(document).ready(function () {
 	loadData();
-})
+});
+
+$('select').change(function () {
+	loadData();
+});
 
 function cpugraph() {
 	const config = {
@@ -80,6 +84,13 @@ function cpugraph() {
 				xAxes: [{
 					type: 'time'
 				}]
+			},
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data) {
+						return tooltipItem.yLabel || '0';
+					},
+				}
 			}
 		}
 	};
