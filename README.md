@@ -3,7 +3,7 @@
 Because fuck modulegarden.
 
 ### Requirements
-WHMCS 7+, Proxmox 5+
+WHMCS 7+, Proxmox 5+, PHP 7.2+
 
 Works only with LXC at the moment. Quemu support will be added soon.
 
